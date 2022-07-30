@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Web", "EshopMicro6.Web\EshopMicro6.Web.csproj", "{07BDC7C6-7430-48B1-9F78-EB725FCDBC78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EshopMicro6.Services", "EshopMicro6.Services", "{504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.ProductApi", "EshopMicro6.Services\EshopMicro6.Services.ProductApi\EshopMicro6.Services.ProductApi.csproj", "{080EE91B-6F8F-4C77-B0BC-80FC41F27892}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07BDC7C6-7430-48B1-9F78-EB725FCDBC78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BDC7C6-7430-48B1-9F78-EB725FCDBC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BDC7C6-7430-48B1-9F78-EB725FCDBC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BDC7C6-7430-48B1-9F78-EB725FCDBC78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{080EE91B-6F8F-4C77-B0BC-80FC41F27892} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
+	EndGlobalSection
+EndGlobal
