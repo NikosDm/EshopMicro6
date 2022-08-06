@@ -17,55 +17,55 @@ public class ProductService : BaseService, IProductService
         _clientFactory = clientFactory;
     }
 
-    public async Task<T> CreateProductAsync<T>(ProductDTO productDTO)
+    public async Task<T> CreateProductAsync<T>(string token, ProductDTO productDTO)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Post,
             Data = productDTO,
-            Url = SD.ProductAPIBase + "api/products",
-            Token = ""
+            Url = SD.ProductAPIBase + "/api/products",
+            Token = token
         });
     }
 
-    public async Task<T> DeleteProductAsync<T>(int id)
+    public async Task<T> DeleteProductAsync<T>(string token, int id)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Delete,
-            Url = SD.ProductAPIBase + "api/products/" + id,
-            Token = ""
+            Url = SD.ProductAPIBase + "/api/products/" + id,
+            Token = token
         });
     }
 
-    public async Task<T> GetAllProductsAsync<T>()
+    public async Task<T> GetAllProductsAsync<T>(string token)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Get,
-            Url = SD.ProductAPIBase + "api/products/",
-            Token = ""
+            Url = SD.ProductAPIBase + "/api/products/",
+            Token = token
         });
     }
 
-    public async Task<T> GetProductByIDAsync<T>(int id)
+    public async Task<T> GetProductByIDAsync<T>(string token, int id)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Get,
-            Url = SD.ProductAPIBase + "api/products/" + id,
-            Token = ""
+            Url = SD.ProductAPIBase + "/api/products/" + id,
+            Token = token
         });
     }
 
-    public async Task<T> UpdateProductAsync<T>(ProductDTO productDTO)
+    public async Task<T> UpdateProductAsync<T>(string token, ProductDTO productDTO)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Put,
             Data = productDTO,
-            Url = SD.ProductAPIBase + "api/products",
-            Token = ""
+            Url = SD.ProductAPIBase + "/api/products",
+            Token = token
         });
     }
 }

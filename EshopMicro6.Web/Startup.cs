@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EshopMicro6.Web.Services;
 using EshopMicro6.Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,10 +28,29 @@ namespace EshopMicro6.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient<IProductService, ProductService>();
-            SD.ProductAPIBase = Configuration["ServiceUrls: ProductAPI"];
+            SD.ProductAPIBase = Configuration["ServiceUrls:ProductAPI"];
 
             services.AddScoped<IProductService, ProductService>();
-
+            
+            services.AddAuthentication(options => 
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(60))
+                .AddOpenIdConnect("oidc", options => 
+                {
+                    options.Authority = Configuration["ServiceUrls:IdentityAPI"];
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.ClientId = "eshop";
+                    options.ClientSecret = "mysecret";
+                    options.ResponseType = "code";
+                    options.TokenValidationParameters.NameClaimType = "name";
+                    options.TokenValidationParameters.RoleClaimType = "role";
+                    options.Scope.Add("eshop");
+                    options.SaveTokens = true;
+                });
+            
             services.AddControllersWithViews();
         }
 
@@ -50,6 +71,8 @@ namespace EshopMicro6.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

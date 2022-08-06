@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EshopMicro6.Services.ProductApi.DTOs;
 using EshopMicro6.Services.ProductApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EshopMicro6.Services.ProductApi.Controllers;
@@ -41,7 +42,7 @@ public class ProductApiController : Controller
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("{productId}")]
     public async Task<ResponseDTO> Get(int productId) 
     {
         try 
@@ -59,6 +60,7 @@ public class ProductApiController : Controller
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ResponseDTO> Post([FromBody] ProductDTO productDTO) 
     {
         try 
@@ -76,6 +78,7 @@ public class ProductApiController : Controller
     }
     
     [HttpPut]
+    [Authorize]
     public async Task<ResponseDTO> Put([FromBody] ProductDTO productDTO) 
     {
         try 
@@ -93,7 +96,8 @@ public class ProductApiController : Controller
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Authorize(Roles = "Admin")]
+    [Route("{productId}")]
     public async Task<ResponseDTO> Delete(int productId) 
     {
         try 

@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EshopMicro6.Services", "Esh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.ProductApi", "EshopMicro6.Services\EshopMicro6.Services.ProductApi\EshopMicro6.Services.ProductApi.csproj", "{080EE91B-6F8F-4C77-B0BC-80FC41F27892}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.Identity", "EshopMicro6.Services\EshopMicro6.Services.Identity\EshopMicro6.Services.Identity.csproj", "{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +28,13 @@ Global
 		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{080EE91B-6F8F-4C77-B0BC-80FC41F27892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{080EE91B-6F8F-4C77-B0BC-80FC41F27892} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
+		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
 	EndGlobalSection
 EndGlobal

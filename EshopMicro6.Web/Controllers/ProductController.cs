@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EshopMicro6.Web.Models;
 using EshopMicro6.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -22,8 +24,10 @@ namespace EshopMicro6.Web.Controllers
 
         public async Task<IActionResult> Products()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
             List<ProductDTO> list = new();
-            var response = await _productService.GetAllProductsAsync<ResponseDTO>();
+            var response = await _productService.GetAllProductsAsync<ResponseDTO>(accessToken);
 
             if (response != null && response.IsSuccess)
             {
@@ -42,9 +46,10 @@ namespace EshopMicro6.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateProduct(ProductDTO product)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
             if (ModelState.IsValid)
             {
-                var response = await _productService.CreateProductAsync<ResponseDTO>(product);
+                var response = await _productService.CreateProductAsync<ResponseDTO>(accessToken, product);
 
                 if (response != null && response.IsSuccess) 
                 {
@@ -57,7 +62,8 @@ namespace EshopMicro6.Web.Controllers
 
         public async Task<IActionResult> EditProduct(int productID)
         {
-            var response = await _productService.GetProductByIDAsync<ResponseDTO>(productID);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.GetProductByIDAsync<ResponseDTO>(accessToken, productID);
 
             if (response != null && response.IsSuccess) 
             {
@@ -72,9 +78,11 @@ namespace EshopMicro6.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(ProductDTO product)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
             if (ModelState.IsValid)
             {
-                var response = await _productService.UpdateProductAsync<ResponseDTO>(product);
+                var response = await _productService.UpdateProductAsync<ResponseDTO>(accessToken, product);
 
                 if (response != null && response.IsSuccess) 
                 {
@@ -85,9 +93,12 @@ namespace EshopMicro6.Web.Controllers
             return View(product);
         }
         
+        // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int productID)
         {
-            var response = await _productService.GetProductByIDAsync<ResponseDTO>(productID);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var response = await _productService.GetProductByIDAsync<ResponseDTO>(accessToken, productID);
 
             if (response != null && response.IsSuccess) 
             {
@@ -99,12 +110,15 @@ namespace EshopMicro6.Web.Controllers
         }
 
         [HttpPost]
+        // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProduct(ProductDTO product)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
             if (ModelState.IsValid)
             {
-                var response = await _productService.DeleteProductAsync<ResponseDTO>(product.ProductId);
+                var response = await _productService.DeleteProductAsync<ResponseDTO>(accessToken, product.ProductId);
 
                 if (response != null && response.IsSuccess) 
                 {
