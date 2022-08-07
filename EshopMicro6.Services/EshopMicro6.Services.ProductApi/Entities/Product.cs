@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EshopMicro6.Services.ProductApi.Entities
-{
-    public class Product
+namespace EshopMicro6.Services.ProductApi.Entities;
+
+public class Product
     {
         public int ProductId { get; set; }
 
@@ -19,4 +19,4 @@ namespace EshopMicro6.Services.ProductApi.Entities
         public string CategoryName { get; set; }
         public string ImageUrl { get; set; }
     }
-}
+    

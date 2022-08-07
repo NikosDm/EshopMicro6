@@ -9,6 +9,7 @@ using EshopMicro6.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using EshopMicro6.Web.Services.IServices;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication;
 
 namespace EshopMicro6.Web.Controllers
 {
@@ -16,11 +17,13 @@ namespace EshopMicro6.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IProductService productService, ICartService cartService)
         {
             _logger = logger;
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<IActionResult> Index()
@@ -36,7 +39,6 @@ namespace EshopMicro6.Web.Controllers
             return View(list);
         }
 
-        [Authorize]
         public async Task<IActionResult> Details(int productID)
         {
             ProductDTO product = new();
@@ -48,6 +50,46 @@ namespace EshopMicro6.Web.Controllers
             }
 
             return View(product);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ActionName("Details")]
+        public async Task<IActionResult> DetailsPost(ProductDTO productDTO)
+        {
+            CartDTO cartDTO = new()
+            {
+                cartHeader = new CartHeaderDTO
+                {
+                    UserID = User.Claims.Where(u => u.Type =="sub")?.FirstOrDefault()?.Value
+                }
+            };
+
+            CartDetailsDTO cartDetailsDTO = new CartDetailsDTO()
+            {
+                Count = productDTO.Count,
+                ProductId = productDTO.ProductId
+            };
+
+            var response = await _productService.GetProductByIDAsync<ResponseDTO>(string.Empty, productDTO.ProductId);
+            if (response != null && response.IsSuccess)
+            {
+                cartDetailsDTO.Product = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result));
+            }
+
+            List<CartDetailsDTO> cartDetailsDTOs = new();
+            cartDetailsDTOs.Add(cartDetailsDTO);
+            cartDTO.CartDetails = cartDetailsDTOs;
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var addToCartResponse = await _cartService.AddToCartAsync<ResponseDTO>(cartDTO, accessToken);
+            if (addToCartResponse != null && addToCartResponse.IsSuccess)
+            {
+                cartDetailsDTO.Product = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(addToCartResponse.Result));
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(productDTO);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
