@@ -22,6 +22,16 @@ public class CartRepository : ICartRepository
         _mapper = mapper;
     }
 
+    public async Task<bool> ApplyCoupon(string userID, string couponCode)
+    {
+        var cartFromDB = await _dbContext.CartHeaders.FirstOrDefaultAsync(u => u.UserID == userID);
+        cartFromDB.CouponCode = couponCode;
+        _dbContext.CartHeaders.Update(cartFromDB);
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<bool> ClearShoppingCart(string UserID)
     {
         var cartHeaderFromDb = await _dbContext.CartHeaders.FirstOrDefaultAsync(u => u.UserID == UserID); 
@@ -49,6 +59,16 @@ public class CartRepository : ICartRepository
         cart.CartDetails = _dbContext.CartDetails.Where(u => u.CartHeaderID == cart.cartHeader.CartHeaderID).Include(u => u.Product);
 
         return _mapper.Map<CartDTO>(cart);
+    }
+
+    public async Task<bool> RemoveCoupon(string userID)
+    {
+        var cartFromDB = await _dbContext.CartHeaders.FirstOrDefaultAsync(u => u.UserID == userID);
+        cartFromDB.CouponCode = string.Empty;
+        _dbContext.CartHeaders.Update(cartFromDB);
+        await _dbContext.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<bool> RemoveFromCart(int CartDetailsID)

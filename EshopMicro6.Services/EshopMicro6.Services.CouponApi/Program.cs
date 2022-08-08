@@ -1,7 +1,7 @@
-using EshopMicro6.Services.ShoppingCartApi.Data;
-using EshopMicro6.Services.ShoppingCartApi.Helpers;
-using EshopMicro6.Services.ShoppingCartApi.Interfaces;
-using EshopMicro6.Services.ShoppingCartApi.Repositories;
+using EshopMicro6.Services.CouponApi.Data;
+using EshopMicro6.Services.CouponApi.Helpers;
+using EshopMicro6.Services.CouponApi.Interfaces;
+using EshopMicro6.Services.CouponApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -14,14 +14,14 @@ var mapper = AutoMapperProfile.RegisterAutoMapper().CreateMapper();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => 
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title ="EshopMicro6.Services.CouponApi" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title ="EshopMicro6.Services.ShoppingCartApi" });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme 
     {

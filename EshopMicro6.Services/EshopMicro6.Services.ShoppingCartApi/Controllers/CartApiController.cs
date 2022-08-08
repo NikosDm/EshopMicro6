@@ -4,18 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using EshopMicro6.Services.ShoppingCartApi.DTOs;
 using EshopMicro6.Services.ShoppingCartApi.Interfaces;
+using EshopMicro6.Services.ShoppingCartApi.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EshopMicro6.Services.ShoppingCartApi.Controllers
 {
     [ApiController]
     [Route("api/cart")]
-    public class CartController : Controller
+    public class CartApiController : Controller
     {
         private readonly ICartRepository _cartRepository;
         protected ResponseDTO _response;
 
-        public CartController(ICartRepository cartRepository)
+        public CartApiController(ICartRepository cartRepository)
         {
             _cartRepository = cartRepository;
             this._response = new ResponseDTO();
@@ -78,6 +80,63 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
             try 
             {
                 _response.IsSuccess = await _cartRepository.RemoveFromCart(cartID);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> () { ex.ToString() };
+            }
+
+            return _response;
+        }
+        
+        [HttpPost("ApplyCoupon")]
+        public async Task<object> ApplyCoupon([FromBody]CartDTO cartDTO)
+        {
+            try 
+            {
+                _response.IsSuccess = await _cartRepository.ApplyCoupon(cartDTO.cartHeader.UserID, cartDTO.cartHeader.CouponCode);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> () { ex.ToString() };
+            }
+
+            return _response;
+        }
+        
+        [HttpPost("RemoveCoupon")]
+        public async Task<object> RemoveCoupon([FromBody]string userID)
+        {
+            try 
+            {
+                _response.IsSuccess = await _cartRepository.RemoveCoupon(userID);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> () { ex.ToString() };
+            }
+
+            return _response;
+        }
+
+        [Authorize]
+        [HttpPost("Checkout")]
+        public async Task<object> Checkout(CheckoutHeaderDTO checkoutHeaderDTO)
+        {
+            try 
+            {
+                CartDTO cartDTO = await _cartRepository.GetCartByUserID(checkoutHeaderDTO.UserID);
+                if (cartDTO == null)
+                {
+                    return BadRequest();
+                }
+
+                checkoutHeaderDTO.cartDetails = cartDTO.CartDetails;
+
+                //logic to add message 
             }
             catch (Exception ex)
             {

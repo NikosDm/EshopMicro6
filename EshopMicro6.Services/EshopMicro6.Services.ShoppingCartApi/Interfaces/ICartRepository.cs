@@ -11,5 +11,7 @@ public interface ICartRepository
     Task<CartDTO> GetCartByUserID(string UserID);
     Task<CartDTO> UpsertCart(CartDTO cartDTO);
     Task<bool> RemoveFromCart(int CartDetailsID);
+    Task<bool> ApplyCoupon(string userID, string couponCode);
+    Task<bool> RemoveCoupon(string userID);
     Task<bool> ClearShoppingCart(string UserID);
 }

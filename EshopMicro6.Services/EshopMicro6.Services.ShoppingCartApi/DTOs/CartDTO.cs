@@ -9,6 +9,6 @@ namespace EshopMicro6.Services.ShoppingCartApi.DTOs
     public class CartDTO
     {
         public CartHeader cartHeader { get; set; }
-        public IEnumerable<CartDetails> CartDetails { get; set; }
+        public IEnumerable<CartDetailsDTO> CartDetails { get; set; }
     }
 }

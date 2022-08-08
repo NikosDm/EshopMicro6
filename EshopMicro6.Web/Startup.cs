@@ -31,9 +31,11 @@ namespace EshopMicro6.Web
             services.AddHttpClient<IProductService, ProductService>();
             SD.ProductAPIBase = Configuration["ServiceUrls:ProductAPI"];
             SD.ShoppingCartAPIBase = Configuration["ServiceUrls:ShoppingCartAPI"];
+            SD.CouponAPIBase = Configuration["ServiceUrls:CouponAPI"];
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICouponService, CouponService>();
             
             services.AddAuthentication(options => 
             {

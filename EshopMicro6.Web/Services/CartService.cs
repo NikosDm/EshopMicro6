@@ -28,12 +28,45 @@ public class CartService : BaseService, ICartService
         });
     }
 
+    public async Task<T> ApplyCouponAsync<T>(CartDTO cartDTO, string token = null)
+    {
+        return await this.SendAsync<T>(new ApiRequest 
+        { 
+            ApiType = SD.ApiType.Post,
+            Data = cartDTO,
+            Url = SD.ShoppingCartAPIBase + "/api/cart/ApplyCoupon",
+            Token = token
+        });
+    }
+
+    public async Task<T> CheckoutAsync<T>(CartHeaderDTO cartHeaderDTO, string token = null)
+    {
+        return await this.SendAsync<T>(new ApiRequest 
+        { 
+            ApiType = SD.ApiType.Post,
+            Data = cartHeaderDTO,
+            Url = SD.ShoppingCartAPIBase + "/api/cart/RemoveCoupon",
+            Token = token
+        });
+    }
+
     public async Task<T> GetCartByUserIDAsync<T>(string userID, string token = null)
     {
         return await this.SendAsync<T>(new ApiRequest 
         { 
             ApiType = SD.ApiType.Get,
             Url = SD.ShoppingCartAPIBase + "/api/cart/GetCart/" + userID,
+            Token = token
+        });
+    }
+
+    public async Task<T> RemoveCouponAsync<T>(string userID, string token = null)
+    {
+        return await this.SendAsync<T>(new ApiRequest 
+        { 
+            ApiType = SD.ApiType.Post,
+            Data = userID,
+            Url = SD.ShoppingCartAPIBase + "/api/cart/RemoveCoupon",
             Token = token
         });
     }
