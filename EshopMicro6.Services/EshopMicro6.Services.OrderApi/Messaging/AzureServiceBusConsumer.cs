@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
+using EshopMicro6.Integration.MessageBus;
 using EshopMicro6.Services.OrderApi.Entities;
 using EshopMicro6.Services.OrderApi.Interfaces;
 using EshopMicro6.Services.OrderApi.Messages;
@@ -15,26 +16,36 @@ namespace EshopMicro6.Services.OrderApi.Messaging
 {
     public class AzureServiceBusConsumer : IAzureServiceBusConsumer
     {
+        private readonly ILogger<AzureServiceBusConsumer> _logger;
         private readonly string serviceBusConnectionString;
         private readonly string subscriptionCheckout;
         private readonly string checkoutMessageTopic;
+        private readonly string orderPaymentProcessTopic;
+        private readonly string orderUpdatePaymentResultTopic;
         private readonly OrderRepository _orderRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMessageBus _messageBus;
 
         private ServiceBusProcessor checkoutProcessor;
+        private ServiceBusProcessor orderUpdatePaymentStatusProcessor;
 
-        public AzureServiceBusConsumer(OrderRepository orderRepository, IConfiguration configuration)
+        public AzureServiceBusConsumer(ILogger<AzureServiceBusConsumer> logger, OrderRepository orderRepository, IConfiguration configuration, IMessageBus messageBus)
         {
             _orderRepository = orderRepository;
             _configuration = configuration;
+            _messageBus = messageBus;
+            _logger = logger;
 
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
             subscriptionCheckout = _configuration.GetValue<string>("SubscriptionCheckout");
             checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
+            orderPaymentProcessTopic = _configuration.GetValue<string>("OrderPaymentProcessTopic");
+            orderUpdatePaymentResultTopic = _configuration.GetValue<string>("OrderUpdatePaymentResultTopic");
 
             var client = new ServiceBusClient(serviceBusConnectionString);
 
             checkoutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionCheckout);
+            orderUpdatePaymentStatusProcessor = client.CreateProcessor(orderUpdatePaymentResultTopic, subscriptionCheckout);
         }
 
         public async Task Start() 
@@ -42,12 +53,19 @@ namespace EshopMicro6.Services.OrderApi.Messaging
             checkoutProcessor.ProcessMessageAsync += OnCheckoutMessageReceived;
             checkoutProcessor.ProcessErrorAsync += ErrorHandler;
             await checkoutProcessor.StartProcessingAsync();
+
+            orderUpdatePaymentStatusProcessor.ProcessMessageAsync += OnOrderPaymentUpdateReceived;
+            orderUpdatePaymentStatusProcessor.ProcessErrorAsync += ErrorHandler;
+            await orderUpdatePaymentStatusProcessor.StartProcessingAsync();
         }
 
         public async Task Stop() 
         {
             await checkoutProcessor.StopProcessingAsync();
             await checkoutProcessor.DisposeAsync();
+            
+            await orderUpdatePaymentStatusProcessor.StopProcessingAsync();
+            await orderUpdatePaymentStatusProcessor.DisposeAsync();
         }
 
         private Task ErrorHandler(ProcessErrorEventArgs args)
@@ -97,6 +115,40 @@ namespace EshopMicro6.Services.OrderApi.Messaging
             }
 
             await _orderRepository.AddOrder(orderHeader);
+
+            PaymentRequestMessage paymentRequestMessage = new() 
+            {
+                Name = string.Concat(orderHeader.FirstName, " ", orderHeader.LastName),
+                CardNumber = orderHeader.CardNumber,
+                CVV = orderHeader.CVV,
+                ExpirtyMonthYear = orderHeader.ExpiryMonthYear,
+                OrderID = orderHeader.OrderHeaderID,
+                OrderTotal = orderHeader.OrderTotal
+            };
+
+            try 
+            {
+                await _messageBus.PublishMessage(paymentRequestMessage, orderPaymentProcessTopic);
+                await args.CompleteMessageAsync(args.Message);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw ex;
+            }
+        }
+
+        private async Task OnOrderPaymentUpdateReceived(ProcessMessageEventArgs args)
+        {
+            var message = args.Message;
+
+            var body = Encoding.UTF8.GetString(message.Body);
+
+            UpdatePaymentResultMessage updatePaymentResultMessage = JsonConvert.DeserializeObject<UpdatePaymentResultMessage>(body);
+
+            await _orderRepository.UpdateOrderPaymentStatus(updatePaymentResultMessage.OrderID, updatePaymentResultMessage.Status);
+
+            await args.CompleteMessageAsync(args.Message);
         }
     }
 }

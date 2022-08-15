@@ -141,8 +141,10 @@ public class CartRepository : ICartRepository
             else 
             {
                 // update the count / cart details
-                cart.CartDetails.FirstOrDefault().Count += CartDetailsFromDB.Count;
                 cart.CartDetails.FirstOrDefault().Product = null;
+                cart.CartDetails.FirstOrDefault().Count += CartDetailsFromDB.Count;
+                cart.CartDetails.FirstOrDefault().CartDetailsID = CartDetailsFromDB.CartDetailsID;
+                cart.CartDetails.FirstOrDefault().CartHeaderID = CartDetailsFromDB.CartHeaderID;
                 _dbContext.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                 await _dbContext.SaveChangesAsync();
             }

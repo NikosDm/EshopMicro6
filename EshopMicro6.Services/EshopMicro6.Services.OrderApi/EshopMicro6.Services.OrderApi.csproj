@@ -19,4 +19,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\EshopMicro6.Integration\EshopMicro6.Integration.MessageBus\EshopMicro6.Integration.MessageBus.csproj" />
+  </ItemGroup>
 </Project>

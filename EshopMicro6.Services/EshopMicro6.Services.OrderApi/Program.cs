@@ -1,3 +1,4 @@
+using EshopMicro6.Integration.MessageBus;
 using EshopMicro6.Services.OrderApi.Data;
 using EshopMicro6.Services.OrderApi.Extensions;
 using EshopMicro6.Services.OrderApi.Interfaces;
@@ -20,6 +21,7 @@ optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultCon
 builder.Services.AddSingleton(new OrderRepository(optionBuilder.Options));
 
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

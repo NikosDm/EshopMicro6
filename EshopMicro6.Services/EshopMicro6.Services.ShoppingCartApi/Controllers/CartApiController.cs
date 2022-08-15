@@ -16,12 +16,14 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
     public class CartApiController : Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly ICouponRepository _couponRepository;
         private readonly IMessageBus _messageBus;
         protected ResponseDTO _response;
 
-        public CartApiController(ICartRepository cartRepository, IMessageBus messageBus)
+        public CartApiController(ICartRepository cartRepository, ICouponRepository couponRepository, IMessageBus messageBus)
         {
             _cartRepository = cartRepository;
+            _couponRepository = couponRepository;
             _messageBus = messageBus;
             this._response = new ResponseDTO();
         }
@@ -137,10 +139,25 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
                     return BadRequest();
                 }
 
+                if (!string.IsNullOrWhiteSpace(checkoutHeaderDTO.CouponCode))
+                {
+                    CouponDTO couponDTO = await _couponRepository.GetCoupon(checkoutHeaderDTO.CouponCode);
+
+                    if (checkoutHeaderDTO.DiscountTotal != couponDTO.DiscountAmount)
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages = new List<string>() { "Coupon Price has changed, please confirm." };
+                        _response.Message = "Coupon Price has changed, please confirm.";
+                        return _response;
+                    }
+                }
+
                 checkoutHeaderDTO.cartDetails = cartDTO.CartDetails;
 
                 //logic to add message 
                 await _messageBus.PublishMessage(checkoutHeaderDTO, "checkoutmessagetopic");
+
+                await _cartRepository.ClearShoppingCart(checkoutHeaderDTO.UserID);
             }
             catch (Exception ex)
             {

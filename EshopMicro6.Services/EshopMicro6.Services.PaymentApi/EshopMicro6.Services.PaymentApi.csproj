@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EshopMicro6.Integration\EshopMicro6.Integration.MessageBus\EshopMicro6.Integration.MessageBus.csproj" />
+    <ProjectReference Include="..\..\EshopMicro6.Payments\EshopMicro6.Payments.PaymentProcessor\EshopMicro6.Payments.PaymentProcessor.csproj" />
+  </ItemGroup>
+</Project>
