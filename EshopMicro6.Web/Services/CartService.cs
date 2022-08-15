@@ -45,7 +45,7 @@ public class CartService : BaseService, ICartService
         { 
             ApiType = SD.ApiType.Post,
             Data = cartHeaderDTO,
-            Url = SD.ShoppingCartAPIBase + "/api/cart/RemoveCoupon",
+            Url = SD.ShoppingCartAPIBase + "/api/cart/Checkout",
             Token = token
         });
     }

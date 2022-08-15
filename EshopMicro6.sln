@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.Shoppi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.CouponApi", "EshopMicro6.Services\EshopMicro6.Services.CouponApi\EshopMicro6.Services.CouponApi.csproj", "{52BB070F-AF4A-4B75-AFFF-F3F9D22BF830}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EshopMicro6.Integration", "EshopMicro6.Integration", "{4F1452DC-4716-4605-BCB7-4502C24B8CD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Integration.MessageBus", "EshopMicro6.Integration\EshopMicro6.Integration.MessageBus\EshopMicro6.Integration.MessageBus.csproj", "{8A370CDC-9630-42FC-AD64-CEFAD26803E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EshopMicro6.Services.OrderApi", "EshopMicro6.Services\EshopMicro6.Services.OrderApi\EshopMicro6.Services.OrderApi.csproj", "{9483FC7B-FCBB-4C54-9A28-87131DE16F41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,11 +50,21 @@ Global
 		{52BB070F-AF4A-4B75-AFFF-F3F9D22BF830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52BB070F-AF4A-4B75-AFFF-F3F9D22BF830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52BB070F-AF4A-4B75-AFFF-F3F9D22BF830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A370CDC-9630-42FC-AD64-CEFAD26803E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A370CDC-9630-42FC-AD64-CEFAD26803E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A370CDC-9630-42FC-AD64-CEFAD26803E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A370CDC-9630-42FC-AD64-CEFAD26803E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9483FC7B-FCBB-4C54-9A28-87131DE16F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9483FC7B-FCBB-4C54-9A28-87131DE16F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9483FC7B-FCBB-4C54-9A28-87131DE16F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9483FC7B-FCBB-4C54-9A28-87131DE16F41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{080EE91B-6F8F-4C77-B0BC-80FC41F27892} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
 		{1BA5655E-9F09-4D4F-A328-2D11BEDACBCD} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
 		{2AB4C147-DD24-40E7-8E3A-C288DA68492F} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
 		{52BB070F-AF4A-4B75-AFFF-F3F9D22BF830} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
+		{8A370CDC-9630-42FC-AD64-CEFAD26803E9} = {4F1452DC-4716-4605-BCB7-4502C24B8CD7}
+		{9483FC7B-FCBB-4C54-9A28-87131DE16F41} = {504CE8BA-35BC-407B-ABDC-53E28D9BFC6A}
 	EndGlobalSection
 EndGlobal

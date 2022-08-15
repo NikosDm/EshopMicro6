@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EshopMicro6.Services.ShoppingCartApi.Entities;
+using EshopMicro6.Services.OrderApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EshopMicro6.Services.ShoppingCartApi.Data;
+namespace EshopMicro6.Services.OrderApi.Data;
 
 public class AppDbContext : DbContext
 {
@@ -13,8 +13,7 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<Product> Products { get; set; }
-    public DbSet<CartHeader> CartHeaders { get; set; }
-    public DbSet<CartDetails> CartDetails { get; set; }
+    public DbSet<OrderHeader> OrderHeaders { get; set; }
+    public DbSet<OrderDetails> OrderDetails { get; set; }
 }
 

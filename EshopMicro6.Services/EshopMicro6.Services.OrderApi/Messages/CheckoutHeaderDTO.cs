@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EshopMicro6.Integration.MessageBus;
-using EshopMicro6.Services.ShoppingCartApi.DTOs;
 
-namespace EshopMicro6.Services.ShoppingCartApi.Messages;
+namespace EshopMicro6.Services.OrderApi.Messages;
 
-public class CheckoutHeaderDTO: BaseMessage
+public class CheckoutHeaderDTO
 {
     public int CartHeaderID { get; set; }
     public string UserID { get; set; }

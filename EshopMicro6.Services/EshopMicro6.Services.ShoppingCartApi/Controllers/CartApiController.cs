@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EshopMicro6.Integration.MessageBus;
 using EshopMicro6.Services.ShoppingCartApi.DTOs;
 using EshopMicro6.Services.ShoppingCartApi.Interfaces;
 using EshopMicro6.Services.ShoppingCartApi.Messages;
@@ -15,11 +16,13 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
     public class CartApiController : Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IMessageBus _messageBus;
         protected ResponseDTO _response;
 
-        public CartApiController(ICartRepository cartRepository)
+        public CartApiController(ICartRepository cartRepository, IMessageBus messageBus)
         {
             _cartRepository = cartRepository;
+            _messageBus = messageBus;
             this._response = new ResponseDTO();
         }
 
@@ -137,6 +140,7 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
                 checkoutHeaderDTO.cartDetails = cartDTO.CartDetails;
 
                 //logic to add message 
+                await _messageBus.PublishMessage(checkoutHeaderDTO, "checkoutmessagetopic");
             }
             catch (Exception ex)
             {
