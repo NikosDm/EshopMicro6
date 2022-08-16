@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EshopMicro6.Services.OrderApi.Messages
+namespace EshopMicro6.Services.EmailApi.Messages
 {
     public class UpdatePaymentResultMessage
     {

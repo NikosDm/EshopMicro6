@@ -10,5 +10,6 @@ namespace EshopMicro6.Services.PaymentApi.Messages
     {
         public int OrderID { get; set; }
         public bool Status { get; set; }
+        public string Email { get; set; }
     }
 }

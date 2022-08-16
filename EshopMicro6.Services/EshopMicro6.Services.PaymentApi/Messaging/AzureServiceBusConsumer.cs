@@ -74,7 +74,8 @@ namespace EshopMicro6.Services.PaymentApi.Messaging
             UpdatePaymentResultMessage updatePaymentResultMessage = new()
             {
                 Status = result,
-                OrderID = paymentRequestMessage.OrderID
+                OrderID = paymentRequestMessage.OrderID,
+                Email = paymentRequestMessage.Email
             };
 
             try 

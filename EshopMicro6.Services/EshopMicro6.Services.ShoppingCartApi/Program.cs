@@ -1,4 +1,5 @@
 using EshopMicro6.Integration.MessageBus;
+using EshopMicro6.Services.ShoppingCartApi;
 using EshopMicro6.Services.ShoppingCartApi.Data;
 using EshopMicro6.Services.ShoppingCartApi.Helpers;
 using EshopMicro6.Services.ShoppingCartApi.Interfaces;
@@ -18,6 +19,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
+
+SD.CheckoutQueue = builder.Configuration["CheckoutQueue"];
 
 builder.Services.AddControllers();
 

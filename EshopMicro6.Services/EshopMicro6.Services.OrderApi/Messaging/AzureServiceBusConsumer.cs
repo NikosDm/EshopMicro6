@@ -44,7 +44,7 @@ namespace EshopMicro6.Services.OrderApi.Messaging
 
             var client = new ServiceBusClient(serviceBusConnectionString);
 
-            checkoutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionCheckout);
+            checkoutProcessor = client.CreateProcessor(checkoutMessageTopic);
             orderUpdatePaymentStatusProcessor = client.CreateProcessor(orderUpdatePaymentResultTopic, subscriptionCheckout);
         }
 
@@ -123,7 +123,8 @@ namespace EshopMicro6.Services.OrderApi.Messaging
                 CVV = orderHeader.CVV,
                 ExpirtyMonthYear = orderHeader.ExpiryMonthYear,
                 OrderID = orderHeader.OrderHeaderID,
-                OrderTotal = orderHeader.OrderTotal
+                OrderTotal = orderHeader.OrderTotal,
+                Email = orderHeader.Email
             };
 
             try 

@@ -14,5 +14,6 @@ namespace EshopMicro6.Services.PaymentApi.Messages
         public string CVV { get; set; }
         public string ExpirtyMonthYear { get; set; }
         public double OrderTotal { get; set; }
+        public string Email { get; set; }
     }
 }

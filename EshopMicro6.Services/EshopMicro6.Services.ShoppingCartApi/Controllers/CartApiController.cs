@@ -155,7 +155,7 @@ namespace EshopMicro6.Services.ShoppingCartApi.Controllers
                 checkoutHeaderDTO.cartDetails = cartDTO.CartDetails;
 
                 //logic to add message 
-                await _messageBus.PublishMessage(checkoutHeaderDTO, "checkoutmessagetopic");
+                await _messageBus.PublishMessage(checkoutHeaderDTO, SD.CheckoutQueue);
 
                 await _cartRepository.ClearShoppingCart(checkoutHeaderDTO.UserID);
             }
